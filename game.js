@@ -56,6 +56,10 @@ const fg = {
 }
 
 const bird = {
+  speed: 0,
+  rotation: 0,
+  gravity: 0.25,
+  jump: 4.6,
 
   animation: [
     { sX: 276, sY: 112 },
@@ -78,10 +82,29 @@ const bird = {
 
   update: function () {
 
+    if (state.current == state.getReady) {
+      this.y = 150;
+    } else {
+      this.speed += this.gravity;
+      this.y += this.speed;
+      if(this.y + this.h/2 >= cvs.height - fg.h) {
+        this.y = cvs.height - fg.h - this.h / 2;
+        if(state.current == state.game) {
+          state.current = state.over;
+        }
+
+
+      }
+    }
+
+    this.period = state.current == state.getReady ? 10 : 5;
+    this.frame += frames % this.period == 0 ? 1 : 0;
+    this.frame = this.frame % this.animation.length;
   },
 
   flap: function () {
 
+    this.speed = -this.jump;
   },
 }
 
@@ -129,7 +152,7 @@ function draw() {
 
 
 function update() {
-  frames++;
+  bird.update();
   //nam1e.update();
 }
 
