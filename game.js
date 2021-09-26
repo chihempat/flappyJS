@@ -1,5 +1,6 @@
 const cvs = document.getElementById("bird");
 const ctx = cvs.getContext("2d");
+const DEGREE = Math.PI / 180;
 let frames = 0;
 
 const sprite = new Image();
@@ -27,6 +28,7 @@ cvs.addEventListener("click", function (evt) {
 
   }
 });
+
 const bg = {
   sX: 0,
   sY: 0,
@@ -49,11 +51,21 @@ const fg = {
   x: 0,
   y: cvs.height - 112,
 
-  draw: function () {
-    ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
-    ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x + this.w, this.y, this.w, this.h);
+  dx : 2,
+
+
+  draw : function(){
+      ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
+      ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x + this.w, this.y, this.w, this.h);
+  },
+
+  update: function() {
+    if (state.current == state.game) {
+      this.x = (this.x - this.dx) % (this.w / 2);
+    }
   }
 }
+
 
 const bird = {
   x: 50,
@@ -80,7 +92,12 @@ const bird = {
   draw: function () {
     let bird = this.animation[this.frame];
 
-    ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h, this.x - this.w/2, this.y -this.h/2, this.w, this.h);
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.drawImage(sprite, bird.sX, bird.sY, this.w, this.h, -this.w / 2, -this.h / 2, this.w, this.h);
+
+    ctx.restore();
   },
 
   update: function () {
@@ -91,17 +108,25 @@ const bird = {
 
     if (state.current == state.getReady) {
       this.y = 150; //reset the bird position
+      this.rotation = 0 * DEGREE;
 
     } else {
       this.speed += this.gravity;
       this.y += this.speed;
-      if(this.y + this.h/2 >= cvs.height - fg.h) {
+      if (this.y + this.h / 2 >= cvs.height - fg.h) {
         this.y = cvs.height - fg.h - this.h / 2;
-        if(state.current == state.game) {
+        if (state.current == state.game) {
           state.current = state.over;
         }
+      }
 
-
+      // if speed is greater than jump, it means the bird is falling
+      if (this.speed >= this.jump) {
+        this.rotation = 90 * DEGREE;
+        this.frame = 1;
+      }
+      else {
+        this.rotation = -25 * DEGREE;
       }
     }
 
@@ -113,6 +138,7 @@ const bird = {
     this.speed = -this.jump;
   },
 }
+
 
 
 // get ready
@@ -159,18 +185,18 @@ function draw() {
 
 function update() {
   bird.update();
+  fg.update();
   //nam1e.update();
 }
 
 function loop() {
-    update();
-    draw();
-    frames++;
-    requestAnimationFrame(loop);
+  update();
+  draw();
+  frames++;
+  requestAnimationFrame(loop);
 }
 
 loop();
-
 
 
 
@@ -185,6 +211,4 @@ loop();
 //       ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.y);
 //   }
 // }
-
-
 
