@@ -56,10 +56,17 @@ const fg = {
 }
 
 const bird = {
+  x: 50,
+  y: 150,
+  w: 34,
+  h: 26,
   speed: 0,
   rotation: 0,
   gravity: 0.25,
   jump: 4.6,
+  frame: 0,
+
+
 
   animation: [
     { sX: 276, sY: 112 },
@@ -67,12 +74,8 @@ const bird = {
     { sX: 276, sY: 164 },
     { sX: 276, sY: 139 }
   ],
-  x: 50,
-  y: 150,
-  w: 34,
-  h: 26,
 
-  frame: 0,
+
 
   draw: function () {
     let bird = this.animation[this.frame];
@@ -82,8 +85,13 @@ const bird = {
 
   update: function () {
 
+    this.period = state.current == state.getReady ? 10 : 5;
+    this.frame += frames % this.period == 0 ? 1 : 0;
+    this.frame = this.frame % this.animation.length;
+
     if (state.current == state.getReady) {
-      this.y = 150;
+      this.y = 150; //reset the bird position
+
     } else {
       this.speed += this.gravity;
       this.y += this.speed;
@@ -97,9 +105,7 @@ const bird = {
       }
     }
 
-    this.period = state.current == state.getReady ? 10 : 5;
-    this.frame += frames % this.period == 0 ? 1 : 0;
-    this.frame = this.frame % this.animation.length;
+
   },
 
   flap: function () {

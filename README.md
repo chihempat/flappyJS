@@ -1,10 +1,20 @@
-# Original-Flappy-bird-JavaScript
+# Flappy-bird-JavaScript
 
-Flappy Bird was a side-scrolling mobile game featuring 2D retro style graphics. The objective was to direct a flying bird, named "Faby", who moves continuously to the right, between sets of Mario-like pipes.
 
-Flappy bird game using Vanilla JavaScript and HTML (HTML5 canvas).
 
-Tutorial followed:
-https://youtu.be/0ArCFchlTq4
+### Flappy bird game using Vanilla JavaScript and HTML (HTML5 canvas).
+
+#### Module Used.
+![HTML](https://img.icons8.com/color/48/000000/html-5--v1.png)
+![JS](https://img.icons8.com/color/50/000000/javascript--v1.png)
+
+#### Hosted on : [Netlify](https://flappyjs.netlify.app/)
+#### Tutorial followed: [Code Explained](https://youtu.be/0ArCFchlTq4)
+
+#### About the original
+Flappy Bird was a side-scrolling mobile game featuring 2D retro style graphics.
+
+![ss](img/ss.png)
+
 
 
