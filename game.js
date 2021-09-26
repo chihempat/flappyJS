@@ -78,6 +78,7 @@ const bird = {
   gravity: 0.25,
   jump: 4.6,
   frame: 0,
+  radius : 12,
 
 
 
@@ -175,12 +176,25 @@ const pipes = {
 
     for(let i = 0; i < this.position.length; i++){
       let p = this.position[i];
+
+      let bottomPipeY = p.y + this.h + this.gap;
+      let topPipeY = p.x;
+
+      if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && (bird.y + bird.radius > p.y && bird.y - bird.radius < p.y + this.h)) {
+        state.current = state.over;
+      }
+      if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && (bird.y + bird.radius > bottomPipeY && bird.y - bird.radius < bottomPipeY + this.h)) {
+        state.current = state.over;
+      }
+
       p.x -= this.dx;
+
       if(p.x + this.w <= 0){
         this.position.shift();
-        score.value++;
+        //score.value++;
       }
     }
+
   },
 
 }
