@@ -2,6 +2,7 @@ const cvs = document.getElementById("bird");
 const ctx = cvs.getContext("2d");
 const DEGREE = Math.PI / 180;
 let frames = 0;
+let score = 0;
 
 const sprite = new Image();
 sprite.src = "img/sprite.png";
@@ -139,6 +140,50 @@ const bird = {
   },
 }
 
+const pipes = {
+  position: [],
+  bottom: { sX: 502, sY: 0 },
+  top: { sX: 553, sY: 0 },
+  w: 53,
+  h: 400,
+  gap: 85,
+  maxYPos: -150,
+  dx: 2,
+
+  draw: function () {
+    for (let i = 0; i < this.position.length; i++) {
+      let p = this.position[i];
+
+      let topY = p.y;
+      let bottomY = p.y + this.h + this.gap;
+
+      //top pipe
+      ctx.drawImage(sprite, this.top.sX, this.top.sY, this.w, this.h, p.x, topY, this.w, this.h);
+
+      //bottom pipe
+      ctx.drawImage(sprite, this.bottom.sX, this.bottom.sY, this.w, this.h, p.x, bottomY, this.w, this.h);
+    }
+  },
+  update: function () {
+    if (state.current != state.game) return;
+    if(frames%100 == 0){
+      this.position.push({
+        x: cvs.width,
+        y: Math.floor(this.maxYPos * (Math.random() + 1))
+      });
+    }
+
+    for(let i = 0; i < this.position.length; i++){
+      let p = this.position[i];
+      p.x -= this.dx;
+      if(p.x + this.w <= 0){
+        this.position.shift();
+        score.value++;
+      }
+    }
+  },
+
+}
 
 
 // get ready
@@ -176,6 +221,7 @@ function draw() {
   ctx.fillStyle = "#70c5ce";
   ctx.fillRect(0, 0, cvs.width, cvs.height);
   bg.draw();
+  pipes.draw();
   fg.draw();
   bird.draw();
   getReady.draw();
@@ -186,6 +232,7 @@ function draw() {
 function update() {
   bird.update();
   fg.update();
+  pipes.update();
   //nam1e.update();
 }
 
