@@ -39,8 +39,31 @@ const startBtn = {
   h: 29,
 }
 
+
+
+window.addEventListener("keydown", function (evt) {
+  if (evt.code !== 'Space') return;
+    switch (state.current) {
+      case state.getReady:
+        state.current = state.game;
+        SWOOSHING.play();
+        break;
+      case state.game:
+        bird.flap();
+        FLAP.play();
+        break;
+      case state.over:
+          pipes.reset();
+          bird.speedReset();
+          score.reset();
+          state.current = state.getReady;
+        break;
+    }
+});
+
 //control the game state
 cvs.addEventListener("click", function (evt) {
+
   switch (state.current) {
     case state.getReady:
       state.current = state.game;
